@@ -4,16 +4,25 @@ const URL = require("../models/url");
 
 
 async function handleGenerateNewShortUrl(req, res){
-    const body = req.body;
-    if(!body.url) return res.status(400).json({error : "url not sent"});
+    const url = req.body.url;
+    //if(!url) return res.status(400).json({error : "url not sent"});
+    const existingUrl = await URL.findOne({ redirectUrl : url });
+    console.log(existingUrl);
+    if ( existingUrl ) {
+      // If the URL already exists, return the existing short id
+      return res.render("home" , {id : existingUrl.shortId});
+    } else {
+
     const shortID = shortid.generate();
      await URL.create({
         shortId  :shortID,
-        redirectUrl : body.url,
+        redirectUrl : url,
         visitHistory: [],
-     })
-    return res.json({id : shortID}); 
-}
+     });
+     return res.render("home" , {id : shortID});
+    
+};}
+
 
 async function handleGetAnalytics(req,res){
     
