@@ -1,6 +1,7 @@
 const express= require('express');
 const urlRoutes = require("./routes/url");
 const staticRoutes = require("./routes/staticRoutes");
+const userRoutes = require("./routes/userRoute");
 const path = require("path");
 const { connectToMOngoDb } = require("./connection");
 const URL = require("./models/url");
@@ -22,6 +23,7 @@ app.set("views", path.resolve("./views"));
 
 app.use("/url" , urlRoutes);
 app.use("/" , staticRoutes);
+app.use("/user" , userRoutes);
 app.get("/:shortid" , async (req,res)=>{
     const shortId = req.params.shortid; 
     const event = await URL.findOneAndUpdate({
