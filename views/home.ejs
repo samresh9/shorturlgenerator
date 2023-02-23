@@ -30,6 +30,7 @@ The locals object can contain any type of data, such as strings, numbers, arrays
             <th>S no</th>
             <th>Short ID</th>
             <th>Redirect Url</th>
+            <th>Short Link</th>
             <th>Clicks</th>
         </thead>
         <tbody>
@@ -38,6 +39,7 @@ The locals object can contain any type of data, such as strings, numbers, arrays
                <td><%= index + 1 %></td>
                <td><%= url.shortId %></td>
                <td><%= url.redirectUrl %></td>
+               <td><a href=" http://localhost:8000/<%= url.shortId %> "  target="_blank"> http://localhost:8000/<%= url.shortId %></a></td>
                <td><%= url.visitHistory.length %></td>
                </tr>
             <% }) %>
