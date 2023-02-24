@@ -9,9 +9,22 @@ function setUser( user){
  return jwt.sign(payload , jwtSecret);
 };
 
-function getUser(token){
+async function getUser(token){
    if(!token) return null;
-  return  jwt.verify(token , jwtSecret)
+  try{
+     const user = await jwt.verify(token , jwtSecret);
+     return user;
+  }catch(err){
+    if(err instanceof jwt.JsonWebTokenError){
+        console.log("jsontoken error");
+        return null;
+        
+    }else{
+        return null;
+    }
+   
+  }
+ 
 };
 
 module.exports = {

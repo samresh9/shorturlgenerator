@@ -4,7 +4,7 @@ const URL = require("../models/url");
 
 
 async function handleGenerateNewShortUrl(req, res){
-    //console.log("inside uel control" , req.user);
+    console.log("inside uel control" , req.user);
     const url = req.body.url;
     //if(!url) return res.status(400).json({error : "url not sent"});
     const existingUrl = await URL.findOne({ redirectUrl : url });
@@ -18,7 +18,7 @@ async function handleGenerateNewShortUrl(req, res){
         shortId  :shortID,
         redirectUrl : url,
         visitHistory: [],
-        CreatedBy:req.user._id, 
+        CreatedBy:req.user.id, 
      });
     // return res.render("home" , {id : shortID});
     return res.redirect("/");

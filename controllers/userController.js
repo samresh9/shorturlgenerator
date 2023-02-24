@@ -1,6 +1,6 @@
 const User =  require("../models/userModel");
 const { v4: uuidv4 } = require('uuid');
-const {setUser} = require("../service/auth");
+const {setUser} = require("../service/authJwt");
 
 async function handleUserSignUp (req, res){
    const {name , email , password} = req.body;
@@ -24,9 +24,13 @@ async function handleUserLogin(req, res){
     return res.redirect("/");
 }
 
-
+async function handleUserLogout(req,res){
+      res.clearCookie("uid");
+      res.redirect("/");
+}
 
 module.exports = {
  handleUserSignUp ,
- handleUserLogin
-};
+ handleUserLogin,
+ handleUserLogout,
+}; 

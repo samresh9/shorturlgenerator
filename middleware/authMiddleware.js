@@ -1,16 +1,19 @@
-const {getUser} = require("../service/auth");
+const {getUser} = require("../service/authJwt");
 
 async function restrictToLogedinUserOnly(req,res,next){
   // console.log("Inside middleware" ,req);
-    const userUid = req.cookies?.uid;
-    const user = getUser(userUid);
+   
+    const token = req.cookies?.uid;
+    const user = await getUser(token);
+    //console.log("authmiddle" ,user)
     if(!user) return res.redirect("/login");
     req.user = user;
     next();
 }
 async function getUserIfLogedin(req,res,next){
     const userUid = req.cookies?.uid;
-    const user = getUser(userUid);
+    const user = await getUser(userUid);
+   //console.log("middleware",user);
     req.user = user;
     next();
 }

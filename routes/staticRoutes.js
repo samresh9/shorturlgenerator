@@ -6,7 +6,7 @@ const router = express.Router();
 router.get("/" , async(req,res)=>{
    console.log("we are in static" ,req.user);
     if(!req.user) return res.render("home");
-   const allUrls = await URL.find({CreatedBy : req.user._id});
+   const allUrls = await URL.find({CreatedBy : req.user.id});
    return res.render("home" , {urls : allUrls});
 });
 
