@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express= require('express');
 const urlRoutes = require("./routes/url");
 const staticRoutes = require("./routes/staticRoutes");

@@ -1,6 +1,6 @@
 
 const jwt = require("jsonwebtoken");
-const jwtSecret = "keytosigntoken";
+const jwtSecret = process.env.SECRET_KEY;
 function setUser( user){
     const payload = {
         id: user._id,
