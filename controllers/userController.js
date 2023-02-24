@@ -1,4 +1,5 @@
 const User =  require("../models/userModel");
+const express = require("express");
 const { v4: uuidv4 } = require('uuid');
 const {setUser} = require("../service/auth");
 
@@ -24,9 +25,21 @@ async function handleUserLogin(req, res){
     return res.redirect("/");
 }
 
+async function  handleUserLogout(req,res){
+    console.log("i am in logout" )
+  try{
 
+    //clear the cookie with uid key value
+     res.clearCookie('uid');
+     res.redirect("/");
+  } 
+  catch{
+      res.json({error : "Logout error occured"});
+  }
+}
 
 module.exports = {
  handleUserSignUp ,
- handleUserLogin
+ handleUserLogin,
+ handleUserLogout,
 };
