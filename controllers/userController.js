@@ -1,23 +1,29 @@
 const User =  require("../models/userModel");
 const { v4: uuidv4 } = require('uuid');
 const {setUser} = require("../service/authJwt");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 async function handleUserSignUp (req, res){
    const {name , email , password} = req.body;
+ const hash = await  bcrypt.hash(password, saltRounds);
    await User.create({
     name,
     email,
-    password,
+    password:hash
    });
    return res.render("home");
 };
 
 async function handleUserLogin(req, res){
     const {name , email , password} = req.body;
-    const user = await User.findOne({email , password});
+    
+    const user = await User.findOne({email });
     if(!user){
         return res.render("login" , {error:"Invalid Username or Password"});
     };
+    const result = await bcrypt.compare(password, user.password);
+    if(result ==!true) res.render("login" , {error:"Invalid Username or Password"});
     
     const token  = setUser(user);
     res.cookie("uid" , token );

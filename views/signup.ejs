@@ -7,51 +7,17 @@
     <title>Document</title>
 </head>
 <body>
-  <h1>URL SHORTNER</h1>
-  <%# In EJS (Embedded JavaScript) templates, locals refers to an object containing variables that are passed from the server to the template for rendering.
-The locals object can contain any type of data, such as strings, numbers, arrays, or objects. The server sets the values of these variables using the res.render() method,
- which takes the name of the EJS template and an optional object containing the data to be passed to the template.%>
- <% if (locals.id) { %>
-  <p>Generated URL is http://localhost:8000/<%=  id %></p>
- <% } %>
+    <h1>Sign Up</h1>
   <div>
-    <form method="POST" action="/url">
-        <label>Enter your original URL</label>
-        <input type="text" placeholder="https://example.com" name="url">
-        <button type="submit">Generate</button>
+    <form method="POST" action="/user">
+        <label>Enter your Fullname</label>
+        <input type="text" required name="name">
+        <label>Email</label>
+        <input type="email" required name="email">
+         <label>Password</label>
+        <input type="password" required name="password">
+        <button type="submit">Sign Up</button>
     </form>
   </div>
-  <div>
-    <% if (locals.urls) { %>
-         <table  
-           cellspacing="15">
-        <thead>
-            <th>S no</th>
-            <th>Short ID</th>
-            <th>Redirect Url</th>
-            <th>Short Link</th>
-            <th>Clicks</th>
-        </thead>
-        <tbody>
-            <% urls.forEach((url,index) => { %>
-                <tr>
-               <td><%= index + 1 %></td>
-               <td><%= url.shortId %></td>
-               <td><%= url.redirectUrl %></td>
-               <td><a href=" http://localhost:8000/<%= url.shortId %> "  target="_blank"> http://localhost:8000/<%= url.shortId %></a></td>
-               <td><%= url.visitHistory.length %></td>
-               </tr>
-            <% }) %>
-        </tbody>
-     </table>
-    <div>
-    <form method="POST" action = "/user/logout">
-      <button type="submit">LOGOUT</button>
-    </form>
-  </div>
-    <% } %>
-    
-  </div>
-  
 </body>
 </html>
