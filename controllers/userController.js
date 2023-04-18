@@ -16,15 +16,16 @@ async function handleUserSignUp (req, res){
 };
 
 async function handleUserLogin(req, res){
-    const {name , email , password} = req.body;
+    const { email , password} = req.body;
     
     const user = await User.findOne({email });
     if(!user){
-        return res.render("login" , {error:"Invalid Username or Password"});
+        return res.render("login" , {error:"create user"});
     };
+
     const result = await bcrypt.compare(password, user.password);
-    if(result ==!true) res.render("login" , {error:"Invalid Username or Password"});
-    
+    if(result ==!true) return res.render("login" , {error:"Invalid Username or Password match"});
+
     const token  = setUser(user);
     res.cookie("uid" , token );
     return res.redirect("/");

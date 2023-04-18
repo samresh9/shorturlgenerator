@@ -12,9 +12,9 @@ async function restrictToLogedinUserOnly(req,res,next){
 }
 async function getUserIfLogedin(req,res,next){
     const userUid = req.cookies?.uid;
+    if(userUid){
     const user = await getUser(userUid);
-   //console.log("middleware",user);
-    req.user = user;
+    req.user = user;}
     next();
 }
 module.exports = {

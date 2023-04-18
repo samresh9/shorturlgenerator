@@ -4,7 +4,7 @@ const URL = require("../models/url");
 
 
 async function handleGenerateNewShortUrl(req, res){
-    console.log("inside uel control" , req.user);
+    console.log("inside url control" , req.user);
     const url = req.body.url;
     //if(!url) return res.status(400).json({error : "url not sent"});
     const existingUrl = await URL.findOne({ redirectUrl : url });

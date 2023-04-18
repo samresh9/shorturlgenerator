@@ -1,6 +1,6 @@
 
 const jwt = require("jsonwebtoken");
-const jwtSecret = process.env.SECRET_KEY;
+const jwtSecret = "samresh";
 function setUser( user){
     const payload = {
         id: user._id,
