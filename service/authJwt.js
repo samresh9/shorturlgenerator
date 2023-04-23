@@ -1,10 +1,11 @@
 
 const jwt = require("jsonwebtoken");
 const jwtSecret = "samresh";
-function setUser( user){
+function setUser(user){
     const payload = {
         id: user._id,
-        email: user.email
+        email: user.email,
+        role: user.role
     };
  return jwt.sign(payload , jwtSecret);
 };

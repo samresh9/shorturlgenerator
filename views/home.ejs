@@ -23,6 +23,9 @@ The locals object can contain any type of data, such as strings, numbers, arrays
   </div>
   <div>
     <% if (locals.urls) { %>
+<% if (locals.name) { %>
+  <h1><%= name %></h1>
+<% } %>
          <table  
            cellspacing="15">
 
@@ -32,6 +35,8 @@ The locals object can contain any type of data, such as strings, numbers, arrays
             <th>Redirect Url</th>
             <th>Short Link</th>
             <th>Clicks</th>
+            <th>Delete</th>
+            <th>Created By</th>
         </thead>
         <tbody>
             <% urls.forEach((url,index) => { %>
@@ -41,8 +46,13 @@ The locals object can contain any type of data, such as strings, numbers, arrays
                <td><%= url.redirectUrl %></td>
                <td><a href=" http://localhost:8000/<%= url.shortId %> "  target="_blank"> http://localhost:8000/<%= url.shortId %></a></td>
                <td><%= url.visitHistory.length %></td>
+              <form method="post" action="/url/delete">
+                 <td><button type="submit" name = "delete" value="<%= url.shortId%>">DELETE</button></td>
+              </form>
+              <td><%= url.CreatedBy.name %></td>
                </tr>
             <% }) %>
+           
         </tbody>
      </table>
      <div>

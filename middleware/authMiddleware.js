@@ -1,23 +1,26 @@
 const {getUser} = require("../service/authJwt");
 
-async function restrictToLogedinUserOnly(req,res,next){
-  // console.log("Inside middleware" ,req);
-   
-    const token = req.cookies?.uid;
-    const user = await getUser(token);
-    //console.log("authmiddle" ,user)
-    if(!user) return res.redirect("/login");
-    req.user = user;
-    next();
+async function checkAuthentication(req,res,next){
+   const token = req.cookies?.uid;
+   req.user= null;
+   if(!token) return next();
+   const user = await getUser(token);
+   req.user = user;
+   return next();
+
 }
-async function getUserIfLogedin(req,res,next){
-    const userUid = req.cookies?.uid;
-    if(userUid){
-    const user = await getUser(userUid);
-    req.user = user;}
-    next();
+function restrictTo(roles = []){
+  //higher order function
+  return function(req,res,next){
+    if(!req.user) return res.redirect("/login");
+    
+    console.log(roles ,"role");
+    if(!roles.includes(req.user.role) ) return res.end("Unauthorised");
+    return next();
+  };
 }
+
 module.exports = {
-    restrictToLogedinUserOnly ,
-    getUserIfLogedin,
+   checkAuthentication,
+   restrictTo,
 }

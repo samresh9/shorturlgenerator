@@ -27,6 +27,7 @@ async function handleUserLogin(req, res){
     if(result ==!true) return res.render("login" , {error:"Invalid Username or Password match"});
 
     const token  = setUser(user);
+    console.log(user);
     res.cookie("uid" , token );
     return res.redirect("/");
 }

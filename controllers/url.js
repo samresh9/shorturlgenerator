@@ -7,7 +7,7 @@ async function handleGenerateNewShortUrl(req, res){
     console.log("inside url control" , req.user);
     const url = req.body.url;
     //if(!url) return res.status(400).json({error : "url not sent"});
-    const existingUrl = await URL.findOne({ redirectUrl : url });
+    const existingUrl = await URL.findOne({ redirectUrl : url , _id: req.user.id });
     if ( existingUrl ) {
       // If the URL already exists, return the existing short id
       return res.render("home" , {id : existingUrl.shortId});
@@ -31,8 +31,16 @@ async function handleGetAnalytics(req,res){
     const result = await URL.findOne({shortId :shortID});
     return res.json({clicks : result.visitHistory.length , analytics: result.visitHistory});
 }
+async function handleUrlDelete(req,res){
+    console.log(req.body.delete)
+    const id = req.body.delete;
+    await URL.deleteOne({shortId : id});
+    console.log("Deleted")
+    return res.redirect("/");
+}
 
 module.exports = {
     handleGenerateNewShortUrl,
     handleGetAnalytics,
+    handleUrlDelete,
 }

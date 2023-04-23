@@ -1,9 +1,9 @@
 require('dotenv').config();
 const express= require('express');
 const urlRoutes = require("./routes/url");
-const staticRoutes = require("./routes/staticRoutes");
+const staticRoutes = require("./routes/staticRoute");
 const userRoutes = require("./routes/userRoute");
-const {restrictToLogedinUserOnly,  getUserIfLogedin, } = require("./middleware/authMiddleware")
+const {checkAuthentication, restrictTo, } = require("./middleware/authMiddleware")
 const path = require("path");
 const { connectToMOngoDb } = require("./connection");
 const URL = require("./models/url");
@@ -19,14 +19,15 @@ connectToMOngoDb("mongodb://localhost:27017/urlShortDB")
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
+app.use(checkAuthentication);
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 app.set("views", path.resolve("./views"));
 
 
 
-app.use("/url" , restrictToLogedinUserOnly, urlRoutes);
-app.use("/" ,   getUserIfLogedin, staticRoutes);
+app.use("/url" , restrictTo(["Normal" , "Admin"]) ,urlRoutes);
+app.use("/" ,    staticRoutes);
 app.use("/user" , userRoutes);
 app.get("/:shortid" , async (req,res)=>{
     const shortId = req.params.shortid; 

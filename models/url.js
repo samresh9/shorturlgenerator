@@ -15,7 +15,8 @@ const urlSchema =  new mongoose.Schema({
     ],
     CreatedBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
+        required:true,
+        ref: "User",
     },
 }, {timestamps : true});
 /*In the Mongoose schema  {timestamps: true} is an option that can be passed to the schema constructor to
