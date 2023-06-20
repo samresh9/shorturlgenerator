@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -22,5 +23,8 @@
     "parser": "^0.1.4",
     "shortid": "^2.2.16",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.39.0"
   }
 }

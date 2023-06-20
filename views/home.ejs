@@ -36,7 +36,7 @@ The locals object can contain any type of data, such as strings, numbers, arrays
             <th>Short Link</th>
             <th>Clicks</th>
             <th>Delete</th>
-            <th>Created By</th>
+
         </thead>
         <tbody>
             <% urls.forEach((url,index) => { %>
@@ -49,7 +49,7 @@ The locals object can contain any type of data, such as strings, numbers, arrays
               <form method="post" action="/url/delete">
                  <td><button type="submit" name = "delete" value="<%= url.shortId%>">DELETE</button></td>
               </form>
-              <td><%= url.CreatedBy.name %></td>
+             
                </tr>
             <% }) %>
            
