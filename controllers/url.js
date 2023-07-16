@@ -5,12 +5,15 @@ const URL = require("../models/url");
 async function handleGenerateNewShortUrl(req, res) {
   console.log("inside url control", req.user);
   const url = req.body.url;
+  console.log(url , "url")
   //if(!url) return res.status(400).json({error : "url not sent"});
-  const existingUrl = await URL.findOne({ redirectUrl: url, _id: req.user.id });
+  const existingUrl = await URL.findOne({ redirectUrl: url, CreatedBy: req.user.id });
+  
   if (existingUrl) {
-    // If the URL already exists, return the existing short id
-    return res.render("home", { id: existingUrl.shortId });
-  } else {
+    // If the URL already exists, return the existing short id;
+   
+    return res.render("home", { id: existingUrl.shortId  , url:existingUrl.redirectUrl});
+  } 
     const shortID = shortid.generate();
     await URL.create({
       shortId: shortID,
@@ -20,8 +23,8 @@ async function handleGenerateNewShortUrl(req, res) {
     });
     // return res.render("home" , {id : shortID});
     return res.redirect("/");
-  }
 }
+
 
 async function handleGetAnalytics(req, res) {
   const shortID = req.params.shortid;
