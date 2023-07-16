@@ -12,7 +12,8 @@
 The locals object can contain any type of data, such as strings, numbers, arrays, or objects. The server sets the values of these variables using the res.render() method,
  which takes the name of the EJS template and an optional object containing the data to be passed to the template.%>
  <% if (locals.id) { %>
-  <p>Generated URL is http://localhost:8000/<%=  id %></p>
+  <p>Short Url for this <%= url  %> is already generated</p>
+  <a href="/"><button>Home</button></a>
  <% } %>
   <div>
     <form method="POST" action="/url">
