@@ -11,12 +11,13 @@ function setUser(user) {
 
 async function getUser(token) {
   if (!token) return null;
+  console.log("token", token);
   try {
-    const user = await jwt.verify(token, jwtSecret);
+    const user = jwt.verify(token, jwtSecret);
     return user;
   } catch (err) {
     if (err instanceof jwt.JsonWebTokenError) {
-      console.log("jsontoken error");
+      console.log("jsontoken error", err);
       return null;
     } else {
       return null;

@@ -1,30 +1,45 @@
-const express = require("express");
 const shortid = require("shortid");
 const URL = require("../models/url");
 
 async function handleGenerateNewShortUrl(req, res) {
   console.log("inside url control", req.user);
   const url = req.body.url;
-  console.log(url , "url")
+  console.log(url, "url");
   //if(!url) return res.status(400).json({error : "url not sent"});
-  const existingUrl = await URL.findOne({ redirectUrl: url, CreatedBy: req.user.id });
-  
+  const existingUrl = await URL.findOne({
+    redirectUrl: url,
+    CreatedBy: req.user.id,
+  });
+
   if (existingUrl) {
     // If the URL already exists, return the existing short id;
-   
-    return res.render("home", { id: existingUrl.shortId  , url:existingUrl.redirectUrl});
-  } 
-    const shortID = shortid.generate();
-    await URL.create({
-      shortId: shortID,
-      redirectUrl: url,
-      visitHistory: [],
-      CreatedBy: req.user.id,
+    return res.json({
+      data: {
+        newUrl: false,
+        content: { id: existingUrl.shortId, url: existingUrl.redirectUrl },
+      },
     });
-    // return res.render("home" , {id : shortID});
-    return res.redirect("/");
+    //  return res.render("home", {data: {newUrl:false,content:{id: existingUrl.shortId  , url:existingUrl.redirectUrl} }});
+  }
+  const shortID = shortid.generate();
+  const newUrl = await URL.create({
+    shortId: shortID,
+    redirectUrl: url,
+    visitHistory: [],
+    CreatedBy: req.user.id,
+  });
+  // return res.render("home" , {id : shortID});
+  return res.json({
+    data: {
+      newUrl: true,
+      content: { id: newUrl.shortId, url: newUrl.redirectUrl },
+    },
+  });
+  //return res.redirect("/");
 }
-
+// async function handleReturnAllUrls (){
+//   const allUrls = 
+// }
 
 async function handleGetAnalytics(req, res) {
   const shortID = req.params.shortid;
@@ -46,4 +61,5 @@ module.exports = {
   handleGenerateNewShortUrl,
   handleGetAnalytics,
   handleUrlDelete,
+ 
 };

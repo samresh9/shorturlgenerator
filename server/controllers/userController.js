@@ -7,12 +7,12 @@ const saltRounds = 10;
 async function handleUserSignUp(req, res) {
   const { name, email, password } = req.body;
   const hash = await bcrypt.hash(password, saltRounds);
-  await User.create({
+ const user = await User.create({
     name,
     email,
     password: hash,
   });
-  return res.render("login");
+  return res.json({user})
 }
 
 async function handleUserLogin(req, res) {
@@ -29,8 +29,9 @@ async function handleUserLogin(req, res) {
 
   const token = setUser(user);
   console.log(user);
-  res.cookie("uid", token);
-  return res.redirect("/");
+  // res.cookie("uid", token);
+  res.json({data:{token , content:{userName:user.name}}})
+ // return res.redirect("/");
 }
 
 async function handleUserLogout(req, res) {
