@@ -7,6 +7,10 @@ const {
   checkAuthentication,
   restrictTo,
 } = require("./middleware/authMiddleware");
+const {
+  handleNotFoundError,
+  handleErrors,
+} = require("./middleware/errorHandlerMiddleware");
 const path = require("path");
 const { connectToMOngoDb } = require("./connection");
 const URL = require("./models/url");
@@ -17,7 +21,7 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 connectToMOngoDb(process.env.MONGO_URI).then(() =>
-  console.log("MONGODB connected")
+  console.log("MONGODB connected"),
 );
 
 app.use(express.urlencoded({ extended: true }));
@@ -31,7 +35,7 @@ app.set("views", path.resolve("./views"));
 app.use("/url", restrictTo(["Normal", "Admin"]), urlRoutes);
 app.use("/", staticRoutes);
 app.use("/user", userRoutes);
-app.get("/:shortid", async (req, res) => {
+app.get("/:shortid", async (req, res, next) => {
   const shortId = req.params.shortid;
   const event = await URL.findOneAndUpdate(
     {
@@ -41,11 +45,14 @@ app.get("/:shortid", async (req, res) => {
       $push: {
         visitHistory: { timestamp: Date.now() },
       },
-    }
+    },
   );
-  if (!event) return res.status(400).json({ error: "Database not found" });
-  res.redirect(event.redirectUrl);
+  //if (!event) return res.status(400).json({ error: "Database not found" });
+  if (event) return res.redirect(event.redirectUrl);
+  return next();
 });
+app.use(handleNotFoundError);
+app.use(handleErrors);
 app.listen(PORT, () => {
   console.log(`Server started at port ${PORT}`);
 });

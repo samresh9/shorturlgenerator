@@ -3,7 +3,6 @@ const {
   handleGenerateNewShortUrl,
   handleGetAnalytics,
   handleUrlDelete,
-  handleReturnAllUrls,
 } = require("../controllers/url");
 const router = express.Router();
 

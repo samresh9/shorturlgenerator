@@ -3,7 +3,7 @@ const { getUser } = require("../service/authJwt");
 async function checkAuthentication(req, res, next) {
   const authHeaderValue = req.headers["authorization"];
   req.user = null;
-  console.log(req)
+
   if (!authHeaderValue) return next();
   const token = authHeaderValue.split(" ")[1];
   const user = await getUser(token);
