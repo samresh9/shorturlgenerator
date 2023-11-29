@@ -7,6 +7,7 @@ const {
 const router = express.Router();
 
 router.post("/", handleGenerateNewShortUrl);
+// router.get("/" handleReturnAllUrls)
 router.post("/delete", handleUrlDelete);
 router.get("/analytics/:shortid", handleGetAnalytics);
 module.exports = router;
